@@ -1,36 +1,19 @@
 #!/usr/bin/env python3
 import os
 import cv2 as cv
-from isi import *
 from operators import *
+from network_bool import NN_b
 import sys
 
-def main():    
-    op_file=sys.argv[1]
-    it=[]
-    window_list=[]  
-    with open(op_file) as opf:
-        
-        l=opf.readline()
-        while len(l) > 1:
-            it_s = l.split()
-            it.append(interval(bitset(it_s[0]), bitset(it_s[1])))
-            l = opf.readline()      
-        
-              
-        l = opf.readline()    
-        while len(l) > 1:
-            pos = [int(p_i) for p_i in l.split()]
-            window_list.append(pos)
-            l = opf.readline()    
-        
-    wd = window(window_list)
-    op = WOp(wd, it)
-    imdir = sys.argv[2]    
-    outdir= sys.argv[3]
+def main():        
+    it=[]       
+    wd = window([(0,-1), (-1, 0), (0, 0), (1, 0), (0, 1)]);
+    op = WOp(wd)
+    imdir = sys.argv[1]    
+    outdir= sys.argv[2]
     im_l = sorted([imdir + '/' + f for f in os.listdir(imdir)])
     
-    N=int(sys.argv[4])
+    N=int(sys.argv[3])
     if N > 0:
         ind=(np.random.rand(N) * len(im_l)).astype(int)
     else:
